@@ -1,0 +1,22 @@
+services:
+  mariadb:
+    volumes:
+      - postgres_data:/config
+
+  syncserver:
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.syncserver.rule=Host(`${SYNC_URL}`)
+      - traefik.http.services.syncserver.loadbalancer.server.port=8000
+      - traefik.http.routers.syncserver.entrypoints=websecure
+      - traefik.http.routers.syncserver.tls.certresolver=letsencrypt
+      - traefik.http.middlewares.syncserver.redirectscheme.scheme=https
+      - traefik.http.middlewares.syncserver.redirectscheme.permanent=true
+
+      - dockns.ns01.record=CNAME
+      - dockns.ns01.name=${SYNC_URL}
+      - dockns.ns01.target_domain=traefik-nas02.tupkers.net
+
+volumes:
+  postgres_data:
+    driver: local
