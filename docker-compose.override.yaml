@@ -16,7 +16,6 @@ services:
       - dockns.ns01.record=CNAME
       - dockns.ns01.name=${SYNC_URL}
       - dockns.ns01.target_domain=traefik-nas02.tupkers.net
-    image: ghcr.io/dan-r/syncstorage-rs-docker:main
 
 volumes:
   postgres_data:
